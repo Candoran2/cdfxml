@@ -3,26 +3,32 @@ class FixedString:
 
 # START_CLASS
 
-	def __init__(self, context, arg=0, template=None, set_default=True):
-		super().__init__(context, arg, template, set_default=False)
-		self.data = b""
-
-	def __repr__(self):
-		return str(self.data)
-
-	@classmethod
-	def read_fields(cls, stream, instance):
-		instance.data = stream.read(instance.arg)
-
-	@classmethod
-	def write_fields(cls, stream, instance):
-		stream.write(instance.data)
-
-	@classmethod
-	def validate_instance(cls, instance, context, arg=0, template=None):
-		super().validate_instance(instance, context, arg, template)
-		assert len(instance.data) == arg
+	def __new__(cls, context, arg, template=None):
+		return "\x00" * arg
 
 	@staticmethod
-	def get_size(instance, context, arg=0, template=None):
-		return len(instance.data)
+	def from_stream(stream, context, arg, template=None):
+		chars = stream.read(arg)
+		return chars.decode(errors="surrogateescape")
+
+	@staticmethod
+	def to_stream(instance, stream, context, arg, template=None):
+		encoded_instance = instance.encode(errors="surrogateescape")
+		assert len(encoded_instance) == arg
+		stream.write(encoded_instance)
+
+	@staticmethod
+	def get_size(instance, context, arg, template=None):
+		return arg
+
+	@classmethod
+	def validate_instance(cls, instance, context, arg, template=None):
+		assert isinstance(instance, str)
+		assert len(instance.encode(errors="surrogateescape")) == arg
+
+	get_field = None
+	_get_filtered_attribute_list = None
+
+	@staticmethod
+	def from_value(value):
+		return str(value)

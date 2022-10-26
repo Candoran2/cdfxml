@@ -1,52 +1,15 @@
 from struct import Struct
 
-from generated.array import Array
 import generated.formats.base.basic as base_basics
+import generated.formats.cdf.basic as cdf_basics
+
+
+class Biguint32(base_basics.class_from_struct(Struct(">I"), lambda value: int(value) % 4294967296)): pass
+
 
 Ubyte = base_basics.Ubyte
+Char = cdf_basics.Char
 
-class Char:
-	def __new__(cls, context=None, arg=0, template=None):
-		return chr(0)
-
-	@staticmethod
-	def from_value(value):
-		return chr(value)
-
-	@classmethod
-	def from_stream(cls, stream, context=None, arg=0, template=None):
-		return chr(Ubyte.from_stream(stream, context, arg, template))
-
-	@classmethod
-	def to_stream(cls, instance, stream, context=None, arg=0, template=None):
-		Ubyte.to_stream(ord(instance), stream, context)
-
-	@staticmethod
-	def get_size(instance, context, arg=0, template=None):
-		return 1
-
-	@classmethod
-	def _get_filtered_attribute_list_array(cls, instance):
-		if isinstance(instance, str) or len(instance.shape) > 1:
-			# used string to represent 1D char array
-			for i in range(len(instance)):
-				yield (i, cls, (0, None), (False, None))
-		else:
-			for i in range(instance.shape[0]):
-				yield (i, Array, (0, None, instance.shape[1:], cls), (False, None))
-
-	@classmethod
-	def validate_instance(cls, instance, context=None, arg=0, template=None):
-		assert(isinstance(instance, str))
-		assert(len(instance) == 1)
-
-	@staticmethod
-	def fmt_member(member, indent=0):
-		lines = str(member).split("\n")
-		lines_new = [lines[0], ] + ["\t" * indent + line for line in lines[1:]]
-		return "\n".join(lines_new)
-
-class Littleuint32(base_basics.Uint): pass
 
 class LineString:
 	"""A variable length string that ends with a newline character (0x0A)."""

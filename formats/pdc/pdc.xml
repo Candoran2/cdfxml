@@ -8,16 +8,12 @@
         A big-endian unsigned 32-bit integer.
     </basic>
 
-    <basic name="ubyte" boolean="true" integral="true" countable="true" size="1" convertible="ushort uint uint64" >
+    <basic name="ubyte" boolean="true" integral="true" countable="true" size="1" >
         An unsigned 8-bit integer.
     </basic>
 
-    <basic name="char" integral="true" countable="false" size="1" convertible="byte" >
+    <basic name="char" integral="true" countable="false" size="1" >
         An 8-bit character.
-    </basic>
-
-    <basic name="ZString" integral="false" >
-        A variable length string that ends with a null byte (0x00).
     </basic>
 
     <basic name="LineString" integral="false" >
@@ -29,8 +25,6 @@
     <struct name="FixedString" >
         <field name="Data" type="char" length="#ARG#"></field>
     </struct>
-
-    <!-- PSI file-specific -->
 
     <!-- PDC file-specific -->
 
@@ -63,7 +57,8 @@
         <field name="Num Words" type="LineString">String describing number of words.</field>
         <field name="Rules Included" type="LineString">String saying "Rules Included"</field>
         <field name="Header End" type="LineString">String saying "END_OF_HEADER"</field>
-        <field name="Unknown Short" type="bigushort">1A 01</field>
+        <field name="Unknown Bytes 1" type="ubyte">1A 01</field>
+        <field name="G2PB" type="G2PB"></field>
     </struct>
 
 </niftoolsxml>

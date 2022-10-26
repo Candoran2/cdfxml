@@ -1,0 +1,1 @@
+C:/SSDDocuments/NifWorkspace/cdfxml/formats/cdf/structs/FixedString.py
