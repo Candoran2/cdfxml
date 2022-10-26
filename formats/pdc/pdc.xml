@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE niftoolsxml>
+<niftoolsxml version="0.9.3.0">
+
+    <!-- Basic Types -->
+
+    <basic name="biguint32" integral="true" countable="true" size="4" >
+        A big-endian unsigned 32-bit integer.
+    </basic>
+
+    <basic name="ubyte" boolean="true" integral="true" countable="true" size="1" convertible="ushort uint uint64" >
+        An unsigned 8-bit integer.
+    </basic>
+
+    <basic name="char" integral="true" countable="false" size="1" convertible="byte" >
+        An 8-bit character.
+    </basic>
+
+    <basic name="ZString" integral="false" >
+        A variable length string that ends with a null byte (0x00).
+    </basic>
+
+    <basic name="LineString" integral="false" >
+        A variable length string that ends with a newline character (0x0A).
+    </basic>
+
+    <!-- Struct Types -->
+
+    <struct name="FixedString" >
+        <field name="Data" type="char" length="#ARG#"></field>
+    </struct>
+
+    <!-- PSI file-specific -->
+
+    <!-- PDC file-specific -->
+
+    <struct name="G2PB" >
+        <field name="Magic" type="FixedString" arg="4">"G2PB"</field>
+        <field name="Unknown 1" type="ubyte" length="9">20 02 09 05 00 00 00 1B 00</field>
+        <field name="Alphabet Size" type="ubyte">1A (26)</field>
+        <field name="Alphabet" type="char" length="Alphabet Size"></field>
+        Rest of file (after header).
+        Unknown bytes
+        Array of something: 0-9, space, dash and underscore
+        Array of some things denoted with shorts
+        Larger array of some things with shorts - broken words?
+        Whole words denoted with shorts until "worth".
+        Alphabet and letter/number groupings.
+        More broken words or words with accents/groupings, ended with ENDG2P : g2p likely stands for Grapheme to Phoneme
+    </struct>
+
+    <struct name="PDCWordList">
+        <field name="Num Words" type="biguint32">Number of words</field>
+        Accented/foreign language letters
+        Word list starts at around 0xE320
+        Ends at around 0x247A60 (with an END)
+    </struct>
+
+    <struct name="PDCFile" >
+        <field name="Magic" type="LineString">DCC</field>
+        <field name="Version" type="LineString">Version 112</field>
+        <field name="Copyright" type="LineString">Copyright notice</field>
+        <field name="Num Words" type="LineString">String describing number of words.</field>
+        <field name="Rules Included" type="LineString">String saying "Rules Included"</field>
+        <field name="Header End" type="LineString">String saying "END_OF_HEADER"</field>
+        <field name="Unknown Short" type="bigushort">1A 01</field>
+    </struct>
+
+</niftoolsxml>
