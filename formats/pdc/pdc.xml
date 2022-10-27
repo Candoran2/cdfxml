@@ -43,9 +43,10 @@
     </struct>
 
     <struct name="G2PB" >
+        G2P likely stands for Grapheme to Phoneme
         <field name="Magic" type="FixedString" arg="4" >"G2PB"</field>
         <field name="Unknown 1" type="ubyte" length="7" >20 02 09 05 00 00 00, same in every file</field>
-        <field name="Num Character Map Groups" type="ubyte" >Byte that varies for files. Seemingly always one more than alphabet size.</field>
+        <field name="Num Character Map Groups" type="ubyte" >Byte that varies for files. Seemingly always 1 more than alphabet size.</field>
         <field name="Unknown 2" type="ubyte" length="1" ></field>
         <field name="Alphabet Size" type="ubyte" ></field>
         <field name="Alphabet" type="char" length="Alphabet Size" ></field>
@@ -55,15 +56,34 @@
         <field name="Unknown Byte 2" type="ubyte" ></field>
         <field name="Character Map" type="CharacterEntry" length="Num Character Map Groups" width="Character Map Groups" ></field>
         <field name="Small Words" type="SizedString" template="bigushort" length="Num Words" ></field>
-        <field name="Alphabet Groups" type="SizedString" template="bigushort" length="8" >Seemingly always 8 with the last one empty.</field>
-        One more byte and an array of bigushort words again.
-        More broken words or words with accents/groupings, ended with ENDG2P : g2p likely stands for Grapheme to Phoneme
+        <field name="Alphabet Groups" type="SizedString" template="bigushort" length="7" >Seemingly always 8 with the last one empty.</field>
+        <field name="Num Word Ends" type="biguint32" ></field>
+        <field name="Word Ends" type="SizedString" template="bigushort" length="Num Word Ends" ></field>
+        <field name="Num Digraphs" type="biguint32" ></field>
+        <field name="Digraphs" type="SizedString" template="bigushort" length="Num Digraphs" >Not really digraphs, contains some single letters, symbols and capital letters.</field>
+        <field name="End" type="FixedString" arg="6" ></field>
+    </struct>
+
+    <struct name="Index7Bytes" >
+        The precise structure of this struct is unknown - it could also be that the index is the start and there
+        are three extra bytes before Index7Array in PDCWordList.
+        <field name="Unknown Bytes 1" type="ubyte" length="3" >3 bytes of which the meaning is not certain</field>
+        <field name="Index" type="bigushort" >Presumably some kind of index into groupings.</field>
+        <field name="Unknown Bytes 2" type="ubyte" length="2" >1 bytes of which the meaning is not certain</field>
     </struct>
 
     <struct name="PDCWordList">
-        <field name="Num Words" type="biguint32">Number of words</field>
-        Accented/foreign language letters
-        Word list starts at around 0xE320
+        <field name="Unknown Bytes 1" type="ubyte" length="0xC" ></field>
+        <field name="Num Index7" type="biguint32" ></field>
+        <field name="Index7Array" type="Index7Bytes" length="Num Index7" ></field>
+        <field name="Max Index" type="bigushort" ></field>
+        <field name="Unknown Bytes 2" type="ubyte" length="0xC" ></field>
+        <field name="Num Ushorts" type="bigushort" ></field>
+        <field name="Ushorts" type="bigushort" length="Num Ushorts" ></field>
+        Some other things
+        Actual word list starts at D905
+        Words struct: byte length of (word + info)
+        Word + info separated by 00 byte.
         Ends at around 0x247A60 (with an END)
     </struct>
 
@@ -76,6 +96,8 @@
         <field name="Header End" type="LineString">String saying "END_OF_HEADER"</field>
         <field name="Unknown Bytes 1" type="ubyte" length="2">1A 01 in all files</field>
         <field name="G2PB" type="G2PB"></field>
+        <field name="Num Words" type="biguint32">Number of words</field>
+        <field name="Word List" type="PDCWordList" arg="Num Words" cond="Num Words != 0" ></field>
     </struct>
 
 </niftoolsxml>
