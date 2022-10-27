@@ -1,6 +1,6 @@
-from generated.formats.cdf.structs.Header import Header
+from generated.formats.pdc.structs.PDCFile import PDCFile as PdcHeader
 
-class CdfFile(Header):
+class PdcFile(PdcHeader):
 
 	def __init__(self, context=None, arg=0, template=None, set_default=True):
 		if context is None:
@@ -12,7 +12,7 @@ class CdfFile(Header):
 		with open(path, "rb") as stream:
 			instance = cls.from_stream(stream, None)
 			return instance
-
+	
 	@classmethod
 	def to_path(cls, instance, path):
 		with open(path, "wb") as stream:

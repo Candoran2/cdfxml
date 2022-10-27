@@ -7,6 +7,9 @@ import generated.formats.cdf.basic as cdf_basics
 class Biguint32(base_basics.class_from_struct(Struct(">I"), lambda value: int(value) % 4294967296)): pass
 
 
+class Bigushort(base_basics.class_from_struct(Struct(">H"), lambda value: int(value) % 65536)): pass
+
+
 Ubyte = base_basics.Ubyte
 Char = cdf_basics.Char
 
