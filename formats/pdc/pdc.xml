@@ -61,12 +61,11 @@
         <field name="Word Ends" type="SizedString" template="bigushort" length="Num Word Ends" ></field>
         <field name="Num Digraphs" type="biguint32" ></field>
         <field name="Digraphs" type="SizedString" template="bigushort" length="Num Digraphs" >Not really digraphs, contains some single letters, symbols and capital letters.</field>
-        <field name="End" type="FixedString" arg="6" ></field>
+        <field name="End" type="FixedString" arg="6" >"ENDG2P"</field>
     </struct>
 
     <struct name="Index7Bytes" >
-        The precise structure of this struct is unknown - it could also be that the index is the start and there
-        are three extra bytes before Index7Array in PDCWordList.
+        A 7-byte struct, appearing to have an index spanning the 4th and 5th byte.
         <field name="Unknown Bytes 1" type="ubyte" length="3" >3 bytes of which the meaning is not certain</field>
         <field name="Index" type="bigushort" >Presumably some kind of index into groupings.</field>
         <field name="Unknown Bytes 2" type="ubyte" length="2" >1 bytes of which the meaning is not certain</field>
@@ -77,9 +76,15 @@
         <field name="Num Index7" type="biguint32" ></field>
         <field name="Index7Array" type="Index7Bytes" length="Num Index7" ></field>
         <field name="Max Index" type="bigushort" ></field>
-        <field name="Unknown Bytes 2" type="ubyte" length="0xC" ></field>
+        <field name="Unknown Bytes 2" type="ubyte" length="0xA" ></field>
+        <field name="Num Extra Ushorts" type="bigushort" ></field>
         <field name="Num Ushorts" type="bigushort" ></field>
         <field name="Ushorts" type="bigushort" length="Num Ushorts" ></field>
+        <field name="Unknown Bytes 3" type="bigushort" length="Num Extra Ushorts - Num Ushorts" ></field>
+        <field name="Num Digraphs" type="bigushort" ></field>
+        <field name="Unknown Ushort 1" type="bigushort" >Seemingly always 6 less than Num Digraphs</field>
+        <field name="Digraphs" type="SizedString" template="bigushort" length="Num Digraphs" >Again not really digraphs so much as some strings with yet-unspecified purpose.</field>
+        <!-- <field > -->
         Some other things
         Actual word list starts at D905
         Words struct: byte length of (word + info)
