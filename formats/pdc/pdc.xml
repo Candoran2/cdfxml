@@ -71,20 +71,27 @@
         <field name="Unknown Bytes 2" type="ubyte" length="2" >1 bytes of which the meaning is not certain</field>
     </struct>
 
+    <struct name="UshortArrayContainer" >
+        <field name="Num Ushorts" type="bigushort" ></field>
+        <field name="Ushorts" type="bigushort" length="Num Ushorts" ></field>
+    </struct>
+
     <struct name="PDCWordList">
         <field name="Unknown Bytes 1" type="ubyte" length="0xC" ></field>
         <field name="Num Index7" type="biguint32" ></field>
         <field name="Index7Array" type="Index7Bytes" length="Num Index7" ></field>
-        <field name="Max Index" type="bigushort" ></field>
-        <field name="Unknown Bytes 2" type="ubyte" length="0xA" ></field>
+        <field name="Max Index" type="bigushort" >Highest index value of structs in Index7Array</field>
+        <field name="Unknown Ushort 1" type="bigushort" >Guess it's a ushort, could also be 2 bytes.</field>
+        <field name="Data Size" type="biguint32" >Bytes from start until "END" (so file size - 3)</field>
+        <field name="Unknown Bytes 2" type="ubyte" length="0x4" >20 02 04 03, same in every file</field>
         <field name="Num Extra Ushorts" type="bigushort" ></field>
         <field name="Num Ushorts" type="bigushort" ></field>
         <field name="Ushorts" type="bigushort" length="Num Ushorts" ></field>
-        <field name="Unknown Bytes 3" type="bigushort" length="Num Extra Ushorts - Num Ushorts" ></field>
+        <field name="Extra Ushorts" type="bigushort" length="Num Extra Ushorts - Num Ushorts" ></field>
         <field name="Num Digraphs" type="bigushort" ></field>
-        <field name="Unknown Ushort 1" type="bigushort" >Seemingly always 6 less than Num Digraphs</field>
+        <field name="Unknown Ushort 2" type="bigushort" >Seemingly always 6 less than Num Digraphs</field>
         <field name="Digraphs" type="SizedString" template="bigushort" length="Num Digraphs" >Again not really digraphs so much as some strings with yet-unspecified purpose.</field>
-        <!-- <field > -->
+        <field name="Ushort Arrays" type="UshortArrayContainer" length="Num Extra Ushorts - Num Digraphs" ></field>
         Some other things
         Actual word list starts at D905
         Words struct: byte length of (word + info)
