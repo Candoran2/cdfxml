@@ -76,6 +76,12 @@
         <field name="Ushorts" type="bigushort" length="Num Ushorts" ></field>
     </struct>
 
+    <struct name="WordEntry" >
+        Some kind of record presumably used to link words to their pronunciation.
+        <field name="Num Bytes" type="ubyte" ></field>
+        <field name="Value" type="ubyte" length="Num Bytes" >Word, followed by 00, followed by the rest of the data (which can have 00 in it).</field>
+    </struct>
+
     <struct name="PDCWordList">
         <field name="Unknown Bytes 1" type="ubyte" length="0xC" ></field>
         <field name="Num Index7" type="biguint32" ></field>
@@ -92,11 +98,11 @@
         <field name="Unknown Ushort 2" type="bigushort" >Seemingly always 6 less than Num Digraphs</field>
         <field name="Digraphs" type="SizedString" template="bigushort" length="Num Digraphs" >Again not really digraphs so much as some strings with yet-unspecified purpose.</field>
         <field name="Ushort Arrays" type="UshortArrayContainer" length="Num Extra Ushorts - Num Digraphs" ></field>
+        <field name="Extra Bytes" type="ubyte" length="Num Extra Ushorts" ></field>
+        <field name="Unknown Bytes 3" type="ubyte" length="3" >Last byte in example files always 1 less than num digraphs.</field>
         Some other things
-        Actual word list starts at D905
-        Words struct: byte length of (word + info)
-        Word + info separated by 00 byte.
-        Ends at around 0x247A60 (with an END)
+        <!-- <field name="Word Entries" type="WordEntry" length="#ARG#" ></field> -->
+        <!-- <field name="End" type="FixedString" arg="3" >"END"</field> -->
     </struct>
 
     <struct name="PDCFile" >
