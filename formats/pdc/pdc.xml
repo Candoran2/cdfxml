@@ -100,9 +100,12 @@
         <field name="Ushort Arrays" type="UshortArrayContainer" length="Num Extra Ushorts - Num Digraphs" ></field>
         <field name="Extra Bytes" type="ubyte" length="Num Extra Ushorts" ></field>
         <field name="Unknown Bytes 3" type="ubyte" length="3" >Last byte in example files always 1 less than num digraphs.</field>
-        Some other things
-        <!-- <field name="Word Entries" type="WordEntry" length="#ARG#" ></field> -->
-        <!-- <field name="End" type="FixedString" arg="3" >"END"</field> -->
+        <field name="Num Int Arrays" type="biguint32" ></field>
+        <field name="Int Arrays" type="biguint32" length="Num Int Arrays" width="4" ></field>
+        <field name="Unknown Byte 1" type="ubyte" >Seemingly always 00, possibly unused.</field>
+        <field name="Word Entries" type="WordEntry" length="#ARG#" ></field>
+        <field name="Unknown Byte 2" type="ubyte" >Seemingly always 00, possibly unused.</field>
+        <field name="End" type="FixedString" arg="3" >"END"</field>
     </struct>
 
     <struct name="PDCFile" >
