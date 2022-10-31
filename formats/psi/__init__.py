@@ -1,6 +1,6 @@
-from generated.formats.pdc.structs.PDCFile import PDCFile as PdcHeader
+from generated.formats.psi.structs.Header import Header
 
-class PdcFile(PdcHeader):
+class PsiFile(Header):
 
 	def __init__(self, context=None, arg=0, template=None, set_default=True):
 		if context is None:
